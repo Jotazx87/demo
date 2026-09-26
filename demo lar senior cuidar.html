@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residencial Terceira Idade | Acolhimento & Cuidado</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter e Merriweather -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome CDN para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Configuração de Temas e Cores Personalizadas -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        warm: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        softbg: '#f8fafc',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos adicionais para efeitos e responsividade */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(15, 118, 110, 0.75), rgba(17, 94, 89, 0.85)), 
+                        url('https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-softbg font-sans text-slate-700 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast de Notificação (Oculto por padrão) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 border border-emerald-500">
+            <i class="fa-solid font-bold text-xl fa-circle-check"></i>
+            <div>
+                <p class="font-bold text-sm">Mensagem enviada com sucesso!</p>
+                <p class="text-xs text-emerald-100">Nossa equipe entrará em contato em instantes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navegação -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 bg-brand-500 text-white rounded-2xl flex items-center justify-center shadow-md group-hover:bg-brand-600 transition-colors">
+                        <i class="fa-solid fa-house-heart text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold font-serif text-slate-800 block leading-tight">Residencial Terceira Idade</span>
+                        <span class="text-xs text-brand-600 font-medium tracking-wide uppercase">Acolhimento & Cuidado</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#sobre" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Sobre Nós</a>
+                    <a href="#servicos" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Serviços</a>
+                    <a href="#estrutura" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Estrutura</a>
+                    <a href="#diferenciais" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Diferenciais</a>
+                    <a href="#depoimentos" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Depoimentos</a>
+                    <a href="#contato" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Contato</a>
+                </nav>
+
+                <!-- Botão Agendar Visita (Desktop) -->
+                <div class="hidden lg:flex items-center gap-4">
+                    <a href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20agendar%20uma%20visita%20ao%20Residencial." target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-2 transform hover:-translate-y-0.5">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Agendar Visita</span>
+                    </a>
+                </div>
+
+                <!-- Botão Mobile Menu -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-brand-600 hover:bg-slate-100 transition-colors" aria-label="Abrir Menu">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#sobre" class="mobile-link block py-2 text-base font-medium text-slate-700 hover:text-brand-600">Sobre Nós</a>
+            <a href="#servicos" class="mobile-link block py-2 text-base font-medium text-slate-700 hover:text-brand-600">Serviços</a>
+            <a href="#estrutura" class="mobile-link block py-2 text-base font-medium text-slate-700 hover:text-brand-600">Estrutura</a>
+            <a href="#diferenciais" class="mobile-link block py-2 text-base font-medium text-slate-700 hover:text-brand-600">Diferenciais</a>
+            <a href="#depoimentos" class="mobile-link block py-2 text-base font-medium text-slate-700 hover:text-brand-600">Depoimentos</a>
+            <a href="#contato" class="mobile-link block py-2 text-base font-medium text-slate-700 hover:text-brand-600">Contato</a>
+            <div class="pt-2">
+                <a href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20agendar%20uma%20visita%20ao%20Residencial." target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-semibold text-center flex items-center justify-center gap-2 shadow-md">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    <span>Agendar Visita via WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Seção Hero -->
+    <section class="hero-bg relative min-h-[85vh] flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 text-white">
+        <div class="max-w-4xl mx-auto text-center space-y-8 z-10">
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 text-emerald-100 text-xs sm:text-sm font-medium shadow-sm">
+                <i class="fa-solid fa-heart text-rose-300"></i>
+                <span>Um lar de paz, respeito e carinho familiar</span>
+            </div>
+            
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight leading-tight text-white drop-shadow-md">
+                Carinho, Segurança e Qualidade de Vida para Quem Você Ama
+            </h1>
+            
+            <p class="text-base sm:text-xl text-slate-100 font-light max-w-2xl mx-auto leading-relaxed drop-shadow">
+                Um espaço preparado com equipe multidisciplinar 24h, ambiente familiar e toda a estrutura acolhedora que seu familiar idoso merece.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <a href="https://wa.me/5500000000000?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações." target="_blank" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-full font-bold text-base shadow-xl hover:shadow-2xl transition-all flex items-center justify-center gap-3 transform hover:-translate-y-1">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <span>Agendar Visita no WhatsApp</span>
+                </a>
+                <a href="#servicos" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/40 px-8 py-4 rounded-full font-semibold text-base backdrop-blur-md transition-all text-center">
+                    Conheça Nossos Serviços
+                </a>
+            </div>
+
+            <!-- Highlights Rápidos / Cards Flutuantes Hero -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-12 text-slate-800 text-left">
+                <div class="glass-card p-4 rounded-2xl flex items-center gap-4 shadow-lg border border-white/50">
+                    <div class="w-12 h-12 bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center shrink-0 text-xl">
+                        <i class="fa-solid fa-user-nurse"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-slate-800">Equipe 24 Horas</h2>
+                        <p class="text-xs text-slate-500">Enfermagem e cuidadores presenciais</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl flex items-center gap-4 shadow-lg border border-white/50">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center shrink-0 text-xl">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-slate-800">Nutrição Balanc.</h2>
+                        <p class="text-xs text-slate-500">Cardápios sob medida</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-2xl flex items-center gap-4 shadow-lg border border-white/50">
+                    <div class="w-12 h-12 bg-warm-100 text-warm-600 rounded-xl flex items-center justify-center shrink-0 text-xl">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm text-slate-800">Ambiente Seguro</h2>
+                        <p class="text-xs text-slate-500">Acessibilidade e conforto total</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Sobre Nós -->
+    <section id="sobre" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <!-- Imagem Ilustrativa -->
+                <div class="relative">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="https://cdn.discordapp.com/attachments/1312157796476784683/1553383504321183774/images.jpg?ex=6ab90c9f&is=6ab7bb1f&hm=e67f3de991883eb9bdd4cb6f01092934602063c32cc1806cdc5b9cc08d695daf" alt="Idosa sorrindo acolhida por cuidadora" class="w-full h-[450px] object-cover">
+                    </div>
+                    <!-- Badge Flutuante na Foto -->
+                    <div class="absolute -bottom-6 -right-6 bg-brand-700 text-white p-6 rounded-2xl shadow-xl hidden sm:flex items-center gap-4 max-w-xs border-4 border-white">
+                        <i class="fa-solid fa-award text-4xl text-warm-500"></i>
+                        <div>
+                            <span class="block text-2xl font-bold font-serif">10+ Anos</span>
+                            <span class="text-xs text-slate-200">Proporcionando dignidade e bem-estar para idosos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo Sobre -->
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 text-brand-700 bg-brand-50 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Sobre o Residencial</span>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-800 leading-tight">
+                        Mais do que uma hospedagem, uma extensão do seu lar
+                    </h2>
+
+                    <p class="text-slate-600 leading-relaxed">
+                        Fundado com o compromisso humanizado de respeitar a individualidade de cada idoso, o <strong>Residencial Terceira Idade</strong> alia assistência médica continuada, carinho genuíno e estimulação cognitiva diária.
+                    </p>
+
+                    <p class="text-slate-600 leading-relaxed">
+                        Entendemos a importância da tranquilidade para a família. Por isso, oferecemos um ambiente caloroso e seguro, onde cada residente mantém sua rotina com autonomia, acompanhamento profissional e a melhor companhia.
+                    </p>
+
+                    <!-- Lista de Pilares -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center shrink-0 mt-1">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-slate-800">Assistência Multidisciplinar</h3>
+                                <p class="text-xs text-slate-500">Médicos, enfermeiros e nutricionistas alinhados.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center shrink-0 mt-1">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-slate-800">Atividades Cognitivas</h3>
+                                <p class="text-xs text-slate-500">Oficinas de memória, música e artesanato.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center shrink-0 mt-1">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-slate-800">Integração Familiar</h3>
+                                <p class="text-xs text-slate-500">Horários flexíveis para visitas e convivência.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div class="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center shrink-0 mt-1">
+                                <i class="fa-solid fa-check text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm text-slate-800">Adaptação Acessível</h3>
+                                <p class="text-xs text-slate-500">Rampas, barras de apoio e piso antiderrapante.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Nossos Serviços -->
+    <section id="servicos" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center gap-2 text-brand-700 bg-brand-100/60 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">
+                    <i class="fa-solid fa-hands-holding-child"></i>
+                    <span>Cuidados Especializados</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-800">
+                    Serviços Pensados para o Bem-Estar Integral
+                </h2>
+                <p class="text-slate-600">
+                    Oferecemos modalidades flexíveis de atendimento para suprir as diferentes necessidades do idoso e de sua família.
+                </p>
+            </div>
+
+            <!-- Grid de Cards de Serviços -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 bg-brand-50 text-brand-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-brand-500 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-bed font-bold"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Hospedagem Permanente</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Acolhimento contínuo e moradia completa com assistência 24h, alimentação balanceada, lavanderia e supervisão médica diária.
+                    </p>
+                    <span class="text-xs font-semibold text-brand-600 group-hover:underline inline-flex items-center gap-1">
+                        Saiba mais <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </span>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-sun font-bold"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Centro Dia (Day Care)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        O idoso passa o dia conosco participando das atividades, refeições e socialização, e retorna para casa ao final da tarde.
+                    </p>
+                    <span class="text-xs font-semibold text-emerald-600 group-hover:underline inline-flex items-center gap-1">
+                        Saiba mais <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </span>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 bg-warm-50 text-warm-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-warm-500 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Enfermagem 24 Horas</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Monitoramento contínuo dos sinais vitais, administração correta de medicamentos e auxílio em todas as tarefas diárias.
+                    </p>
+                    <span class="text-xs font-semibold text-warm-600 group-hover:underline inline-flex items-center gap-1">
+                        Saiba mais <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </span>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-person-walking-with-cane"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Fisioterapia & Reabilitação</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Exercícios direcionados para fortalecimento muscular, equilíbrio, prevenção de quedas e manutenção da mobilidade.
+                    </p>
+                    <span class="text-xs font-semibold text-blue-600 group-hover:underline inline-flex items-center gap-1">
+                        Saiba mais <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </span>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-apple-whole"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Nutrição & Dietas Especiais</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        6 refeições diárias preparadas por nutricionistas, respeitando restrições alimentares (diabéticos, hipertensos, etc.).
+                    </p>
+                    <span class="text-xs font-semibold text-purple-600 group-hover:underline inline-flex items-center gap-1">
+                        Saiba mais <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </span>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                    <div class="w-14 h-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:bg-rose-500 group-hover:text-white transition-colors">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Oficinas & Musicoterapia</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Atividades recreativas que estimulam a memória, criatividade e socialização diária entre os residentes.
+                    </p>
+                    <span class="text-xs font-semibold text-rose-600 group-hover:underline inline-flex items-center gap-1">
+                        Saiba mais <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Estrutura e Instalações -->
+    <section id="estrutura" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center gap-2 text-brand-700 bg-brand-50 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">
+                    <i class="fa-solid fa-building-user"></i>
+                    <span>Nosso Espaço</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-800">
+                    Estrutura Projetada para o Conforto e Acessibilidade
+                </h2>
+                <p class="text-slate-600">
+                    Ambientes amplos, arejados e seguros para garantir que o idoso se sinta em casa.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Galeria Card 1 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-md">
+                    <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=600" alt="Suíte aconchegante" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent p-6 flex flex-col justify-end">
+                        <h3 class="text-white font-bold text-lg">Quartos Suítes</h3>
+                        <p class="text-slate-200 text-xs">Aconchegantes, adaptados e com iluminação natural.</p>
+                    </div>
+                </div>
+
+                <!-- Galeria Card 2 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-md">
+                    <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&q=80&w=600" alt="Jardim e Área Verde" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent p-6 flex flex-col justify-end">
+                        <h3 class="text-white font-bold text-lg">Área Verde e Jardim</h3>
+                        <p class="text-slate-200 text-xs">Espaço ao ar livre para caminhadas e banho de sol.</p>
+                    </div>
+                </div>
+
+                <!-- Galeria Card 3 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-md">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=600" alt="Sala de Convivência" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent p-6 flex flex-col justify-end">
+                        <h3 class="text-white font-bold text-lg">Sala de Convivência</h3>
+                        <p class="text-slate-200 text-xs">Ambiente para TV, leitura e bate-papo em grupo.</p>
+                    </div>
+                </div>
+
+                <!-- Galeria Card 4 -->
+                <div class="group relative rounded-2xl overflow-hidden shadow-md">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=600" alt="Refeitório e Cozinha" class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent p-6 flex flex-col justify-end">
+                        <h3 class="text-white font-bold text-lg">Refeitório Amplo</h3>
+                        <p class="text-slate-200 text-xs">Refeições servidas com afeto e higiene rigorosa.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Diferenciais -->
+    <section id="diferenciais" class="py-20 bg-brand-800 text-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 bg-brand-700 text-emerald-200 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase border border-brand-600">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Nossos Diferenciais</span>
+                    </div>
+
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white leading-tight">
+                        Por que as famílias confiam e nos recomendam?
+                    </h2>
+
+                    <p class="text-brand-100 leading-relaxed">
+                        Sabemos que colocar um familiar idoso em um residencial é uma decisão delicada. Nosso propósito é fazer dessa escolha uma transição suave, repleta de segurança e carinho.
+                    </p>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-4 bg-brand-700/50 p-4 rounded-2xl border border-brand-600/50">
+                            <i class="fa-solid fa-video text-warm-500 text-xl mt-1"></i>
+                            <div>
+                                <h3 class="font-bold text-white">Monitoramento de Segurança</h3>
+                                <p class="text-xs text-brand-100">Câmeras de segurança nas áreas de convivência para paz de espírito das famílias.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 bg-brand-700/50 p-4 rounded-2xl border border-brand-600/50">
+                            <i class="fa-solid fa-file-medical text-emerald-400 text-xl mt-1"></i>
+                            <div>
+                                <h3 class="font-bold text-white">Relatório Familiar Semanal</h3>
+                                <p class="text-xs text-brand-100">Transparência total com atualizações sobre saúde, humor e rotina do idoso.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 bg-brand-700/50 p-4 rounded-2xl border border-brand-600/50">
+                            <i class="fa-solid fa-pills text-blue-300 text-xl mt-1"></i>
+                            <div>
+                                <h3 class="font-bold text-white">Gestão Rígida de Medicamentos</h3>
+                                <p class="text-xs text-brand-100">Administração de medicação estritamente controlada pela equipe de enfermagem.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card de Ação Rápida dentro do Bloco -->
+                <div class="bg-white text-slate-800 p-8 sm:p-10 rounded-3xl shadow-2xl space-y-6">
+                    <h3 class="text-2xl font-serif font-bold text-slate-800">Venha nos fazer uma visita sem compromisso</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Agende um horário para tomar um café conosco, conhecer nossas instalações e conversar pessoalmente com nossa equipe de enfermagem.
+                    </p>
+
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-center gap-3 text-slate-700 text-sm">
+                            <i class="fa-solid fa-clock text-brand-600"></i>
+                            <span>Visitas Abertas: Seg a Dom, das 09h às 17h</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-slate-700 text-sm">
+                            <i class="fa-solid fa-location-dot text-brand-600"></i>
+                            <span>Bairro Nobre, Tranquilo e Arborizado</span>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20agendar%20uma%20visita%20guiada." target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Falar com a Gerência no WhatsApp</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Depoimentos -->
+    <section id="depoimentos" class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+                <div class="inline-flex items-center gap-2 text-brand-700 bg-brand-100 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">
+                    <i class="fa-solid fa-comment-dots"></i>
+                    <span>Depoimentos</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-800">
+                    O que dizem as famílias que confiam em nós
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Depoimento 1 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+                    <div class="space-y-4">
+                        <div class="flex text-warm-500 gap-1 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 text-sm italic leading-relaxed">
+                            "Encontrar o Residencial foi uma bênção. Minha mãe estava muito solitária em casa e lá ela ganhou amigas, voltou a sorrir e é tratada com um carinho que nos emociona. Recomendo de olhos fechados."
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-brand-100 text-brand-700 rounded-full font-bold flex items-center justify-center text-sm">
+                            MC
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-800">Mariana Carvalho</h3>
+                            <span class="text-xs text-slate-400">Filha da Sra. Helena (82 anos)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Depoimento 2 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+                    <div class="space-y-4">
+                        <div class="flex text-warm-500 gap-1 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 text-sm italic leading-relaxed">
+                            "A equipe de enfermagem é incrível. Meu pai necessita de cuidados constantes de medicação e fisioterapia. A evolução do estado de saúde dele em 6 meses foi notável."
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full font-bold flex items-center justify-center text-sm">
+                            RF
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-800">Ricardo Farias</h3>
+                            <span class="text-xs text-slate-400">Filho do Sr. Antônio (78 anos)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Depoimento 3 -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between space-y-4">
+                    <div class="space-y-4">
+                        <div class="flex text-warm-500 gap-1 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-slate-600 text-sm italic leading-relaxed">
+                            "A transparência do lar nos traz uma paz de espírito gigantesca. As fotos das atividades diárias no aplicativo e os relatórios semanais nos deixam muito seguros."
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-warm-100 text-warm-700 rounded-full font-bold flex items-center justify-center text-sm">
+                            PS
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm text-slate-800">Patricia Souza</h3>
+                            <span class="text-xs text-slate-400">Neta da Sra. Lourdes (86 anos)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Contato -->
+    <section id="contato" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                
+                <!-- Informações e Formulário -->
+                <div class="space-y-8">
+                    <div>
+                        <div class="inline-flex items-center gap-2 text-brand-700 bg-brand-50 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase mb-3">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>Fale Conosco</span>
+                        </div>
+                        <h2 class="text-3xl font-serif font-bold text-slate-800">
+                            Solicite Informações ou Agende uma Visita
+                        </h2>
+                        <p class="text-slate-600 text-sm mt-2">
+                            Preencha os dados abaixo e nossa equipe entrará em contato em poucas horas para tirar todas as suas dúvidas.
+                        </p>
+                    </div>
+
+                    <!-- Formulário com JS Simulado -->
+                    <form id="contact-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nome Completo</label>
+                            <input type="text" required placeholder="Digite seu nome" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-sm">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Telefone / WhatsApp</label>
+                                <input type="tel" required placeholder="(00) 00000-0000" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Modalidade de Interesse</label>
+                                <select class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-sm text-slate-600">
+                                    <option>Hospedagem Permanente</option>
+                                    <option>Centro Dia (Day Care)</option>
+                                    <option>Hospedagem Temporária</option>
+                                    <option>Outras Dúvidas</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Sua Mensagem (Opcional)</label>
+                            <textarea rows="4" placeholder="Conte-nos um pouco sobre quem você busca acomodar..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Enviar Solicitação</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Detalhes de Contato e Mapa -->
+                <div class="space-y-6 flex flex-col justify-between">
+                    <div class="bg-slate-50 p-8 rounded-3xl border border-slate-100 space-y-6">
+                        <h3 class="text-xl font-bold text-slate-800 border-b border-slate-200 pb-4">Canais Diretos de Atendimento</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Telefone Comercial</span>
+                                    <span class="font-bold text-slate-800 text-sm">(00) 3333-4444</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block">WhatsApp 24h</span>
+                                    <span class="font-bold text-slate-800 text-sm">(00) 99999-8888</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 block">Endereço do Residencial</span>
+                                    <span class="font-bold text-slate-800 text-sm">Rua das Flores, 123 - Bairro Jardim, Sua Cidade/UF</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card WhatsApp Destacado -->
+                        <div class="pt-4">
+                            <a href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20falar%20com%20a%20recepção." target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                                <span>Chamar no WhatsApp Agora</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder para Mapa do Google -->
+                    <div class="rounded-3xl overflow-hidden shadow-md h-52 bg-slate-200 relative flex items-center justify-center text-slate-500">
+                        <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800" alt="Mapa Ilustrativo" class="w-full h-full object-cover opacity-60">
+                        <div class="absolute bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl shadow-md text-xs font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-map-pin text-rose-500 text-base"></i>
+                            <span>Localização Fácil e Acessível</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                
+                <!-- Coluna 1: Logo e Descrição -->
+                <div class="space-y-4 md:col-span-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-brand-500 text-white rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-house-heart text-xl"></i>
+                        </div>
+                        <span class="text-lg font-bold font-serif text-white">Residencial Terceira Idade</span>
+                    </div>
+                    <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
+                        Comprometidos em oferecer um envelhecimento ativo, seguro e cercado de carinho. Nossa missão é cuidar com amor de quem sempre cuidou de você.
+                    </p>
+                </div>
+
+                <!-- Coluna 2: Links Rápidos -->
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Navegação</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#sobre" class="hover:text-white transition-colors">Sobre Nós</a></li>
+                        <li><a href="#servicos" class="hover:text-white transition-colors">Nossos Serviços</a></li>
+                        <li><a href="#estrutura" class="hover:text-white transition-colors">Estrutura</a></li>
+                        <li><a href="#diferenciais" class="hover:text-white transition-colors">Diferenciais</a></li>
+                        <li><a href="#depoimentos" class="hover:text-white transition-colors">Depoimentos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3: Contato Rápido -->
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Atendimento</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li>Segunda a Domingo: 09h às 17h</li>
+                        <li>WhatsApp: (00) 99999-8888</li>
+                        <li>Email: contato@residencialexemplo.com.br</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+                <p>&copy; 2026 Residencial Terceira Idade. Todos os direitos reservados.</p>
+                <p class="flex items-center gap-1">
+                    <span>Desenvolvido com carinho e dedicação</span>
+                    <i class="fa-solid fa-heart text-rose-500"></i>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de Interatividade -->
+    <script>
+        // Toggle do Menu Mobile
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Fechar menu mobile ao clicar em algum link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Simulação de Envio do Formulário de Contato com Toast
+        const contactForm = document.getElementById('contact-form');
+        const toast = document.getElementById('toast');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Exibir Toast
+            toast.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            // Limpar formulário
+            contactForm.reset();
+
+            // Esconder Toast após 4 segundos
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
